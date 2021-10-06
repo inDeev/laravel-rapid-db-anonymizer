@@ -1,0 +1,57 @@
+{
+    "name": "indeev/laravel-rapid-db-anonymizer",
+    "description": "Rapidly anonymize huge amount of data",
+    "keywords": [
+        "indeev",
+        "laravel-rapid-db-anonymizer",
+        "laravel",
+        "database",
+        "anonymize"
+    ],
+    "homepage": "https://github.com/indeev/laravel-rapid-db-anonymizer",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Petr Katerinak",
+            "email": "katerinak@indeev.eu",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.4|^8.0",
+        "illuminate/support": "^8.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^6.0",
+        "phpunit/phpunit": "^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Indeev\\LaravelRapidDbAnonymizer\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Indeev\\LaravelRapidDbAnonymizer\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Indeev\\LaravelRapidDbAnonymizer\\LaravelRapidDbAnonymizerServiceProvider"
+            ],
+            "aliases": {
+                "LaravelRapidDbAnonymizer": "Indeev\\LaravelRapidDbAnonymizer\\LaravelRapidDbAnonymizerFacade"
+            }
+        }
+    }
+}
