@@ -1,7 +1,6 @@
 # Laravel Rapid DB Anonymizer
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/indeev/laravel-rapid-db-anonymizer.svg?style=flat-square)](https://packagist.org/packages/indeev/laravel-rapid-db-anonymizer)
-[![Total Downloads](https://img.shields.io/packagist/dt/indeev/laravel-rapid-db-anonymizer.svg?style=flat-square)](https://packagist.org/packages/indeev/laravel-rapid-db-anonymizer)
+[![Latest Stable Version](http://poser.pugx.org/indeev/laravel-rapid-db-anonymizer/v)](https://packagist.org/packages/indeev/laravel-rapid-db-anonymizer) [![Total Downloads](http://poser.pugx.org/indeev/laravel-rapid-db-anonymizer/downloads)](https://packagist.org/packages/indeev/laravel-rapid-db-anonymizer) [![Latest Unstable Version](http://poser.pugx.org/indeev/laravel-rapid-db-anonymizer/v/unstable)](https://packagist.org/packages/indeev/laravel-rapid-db-anonymizer) [![License](http://poser.pugx.org/indeev/laravel-rapid-db-anonymizer/license)](https://packagist.org/packages/indeev/laravel-rapid-db-anonymizer) [!
 
 Package automatically anonymizes sensitive data through database.
 
