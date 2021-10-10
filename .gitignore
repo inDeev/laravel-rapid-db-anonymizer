@@ -3,3 +3,8 @@ vendor/
 node_modules/
 npm-debug.log
 yarn-error.log
+/.phpunit.result.cache
+
+.DS_Store
+**/.DS_Store
+build/

@@ -6,6 +6,10 @@ trait Anonymizable
 {
     protected static function getAnonymizable(): array
     {
-        return self::ANONYMIZABLE;
+        if (defined('static::ANONYMIZABLE')) {
+            return self::ANONYMIZABLE;
+        } else {
+            return [];
+        }
     }
 }
