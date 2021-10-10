@@ -1,7 +1,6 @@
 # Laravel Rapid DB Anonymizer
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/indeev/laravel-rapid-db-anonymizer.svg?style=flat-square)](https://packagist.org/packages/indeev/laravel-rapid-db-anonymizer)
-[![Total Downloads](https://img.shields.io/packagist/dt/indeev/laravel-rapid-db-anonymizer.svg?style=flat-square)](https://packagist.org/packages/indeev/laravel-rapid-db-anonymizer)
+[![Latest Stable Version](http://poser.pugx.org/indeev/laravel-rapid-db-anonymizer/v)](https://packagist.org/packages/indeev/laravel-rapid-db-anonymizer) [![Total Downloads](http://poser.pugx.org/indeev/laravel-rapid-db-anonymizer/downloads)](https://packagist.org/packages/indeev/laravel-rapid-db-anonymizer) [![Latest Unstable Version](http://poser.pugx.org/indeev/laravel-rapid-db-anonymizer/v/unstable)](https://packagist.org/packages/indeev/laravel-rapid-db-anonymizer) [![License](http://poser.pugx.org/indeev/laravel-rapid-db-anonymizer/license)](https://packagist.org/packages/indeev/laravel-rapid-db-anonymizer)
 
 Package automatically anonymizes sensitive data through database.
 
@@ -24,24 +23,91 @@ class Customer
     // CONSTANTS
 
     const ANONYMIZABLE = [
-        'name' => 'firstName',
-        'surname' => 'lastName',
-        'born_date' => 'date',
-        'personal_in' => 'numerify|######/####',
-        'phone' => 'phone',
-        'email' => 'email',
-        'note' => 'null',
-        'ID_number' => 'numerify|#########',
-        'authorization_code' => 'word',
+        'name' => [
+            'faker' => ['provider' => 'firstName'],
+        ],
     ];
     // ...
 }
 ```
 
-`ANONYMIZABLE` constant is defined as array of `column_name => faker_property/method`. If Faker's method with argument is required, argument must be divided from method name by pipe character (`|`). E.g. to use `faker->numerify('###')`, `'numerify|###'` is used. 
+`ANONYMIZABLE` is defined as array of `'column name' => [what to do]` values.
 
+### Prepare ANONYMIZABLE constant
+
+Truncate table
+```php
+const ANONYMIZABLE = ['truncate'];
+```
+**Replace column value with faker's provider** (without parameters)
+```php
+const ANONYMIZABLE = [
+        'name' => [
+            'faker' => ['provider' => 'firstName'],
+        ],
+        // next columns
+    ];
+ ```
+**Replace column value with faker's provider** (with parameters)
+```php
+const ANONYMIZABLE = [
+        'secret_code' => [
+            'faker' => ['provider' => 'randomNumber', 'params' => [6, true]],
+        ],
+        // next columns
+    ];
+ ```
+**Replace with exact value**  
+- if value of setTo is an array type, it is converted to json string. E.g. `['foo' => 'bar']` is converted to `{"foo":"bar"}`
+- if value of setTo is `null`, it is converted to NULL. Pay special attention that the column must be nullable in this case.
+```php
+const ANONYMIZABLE = [
+        'favorite_politician' => [
+            'setTo' => 'CONFIDENTIAL',
+        ],
+        'favorite_numbers' => [
+            'setTo' => [7, 13],
+        ],
+        'favorite_meals' => [
+            'setTo' => null,
+        ],
+        // next columns
+    ];
+ ```
+**Replace also NULL values**  
+By default, NULL values are retained, if you want to anonymize them also, just use `anonymizeNull` switch for specified column.
+```php
+const ANONYMIZABLE = [
+        'shipping_address' => [
+            'faker' => ['provider' => 'address'],
+            'anonymizeNull' => true,
+        ],
+        // next columns
+    ];
+ ```
+
+### Run anonymization
+Run anonymization of all models with anonymization trait
 ```cmd
 php artisan db:anonymize
+```
+Run anonymization of specific model's table
+```cmd
+php artisan db:anonymize --model=\\App\\Models\\VerificationCode
+```
+Run anonymization of specific columns in all models where are specified columns defined in `ANONYMIZABLE` constant.
+```cmd
+php artisan db:anonymize --columns=name,surname
+```
+Run anonymization of specific columns in specific model's table
+```cmd
+php artisan db:anonymize --model=\\App\\Models\\VerificationCode --columns=name,surname
+```
+
+## Testing
+
+```bash
+composer test
 ```
 
 ## Config
