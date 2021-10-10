@@ -1,12 +1,15 @@
 # Laravel Rapid DB Anonymizer
 
-[![Latest Stable Version](http://poser.pugx.org/indeev/laravel-rapid-db-anonymizer/v)](https://packagist.org/packages/indeev/laravel-rapid-db-anonymizer) [![Total Downloads](http://poser.pugx.org/indeev/laravel-rapid-db-anonymizer/downloads)](https://packagist.org/packages/indeev/laravel-rapid-db-anonymizer) [![Latest Unstable Version](http://poser.pugx.org/indeev/laravel-rapid-db-anonymizer/v/unstable)](https://packagist.org/packages/indeev/laravel-rapid-db-anonymizer) [![License](http://poser.pugx.org/indeev/laravel-rapid-db-anonymizer/license)](https://packagist.org/packages/indeev/laravel-rapid-db-anonymizer)
+[![Latest Stable Version](http://poser.pugx.org/indeev/laravel-rapid-db-anonymizer/v)](https://packagist.org/packages/indeev/laravel-rapid-db-anonymizer)
+[![Total Downloads](http://poser.pugx.org/indeev/laravel-rapid-db-anonymizer/downloads)](https://packagist.org/packages/indeev/laravel-rapid-db-anonymizer)
+[![Latest Unstable Version](http://poser.pugx.org/indeev/laravel-rapid-db-anonymizer/v/unstable)](https://packagist.org/packages/indeev/laravel-rapid-db-anonymizer)
+[![License](http://poser.pugx.org/indeev/laravel-rapid-db-anonymizer/license)](https://packagist.org/packages/indeev/laravel-rapid-db-anonymizer)
 
-Package automatically anonymizes sensitive data through database.
+The package rapidly anonymizes large amounts of sensitive data throughout the database.
 
 ## Installation
 
-You can install the package via composer:
+You can install the package through the composer:
 
 ```bash
 composer require indeev/laravel-rapid-db-anonymizer
@@ -14,13 +17,11 @@ composer require indeev/laravel-rapid-db-anonymizer
 
 ## Usage
 
-On any model which is using sensitive data add `use Anonymizable` and constant `const ANONYMIZABLE = [];` e.g.:
+In any model that contains sensitive data `use Anonymizable;` trait and `const ANONYMIZABLE = [];` constant.
 ```php
 class Customer 
 {
     use Anonymizable;
-    
-    // CONSTANTS
 
     const ANONYMIZABLE = [
         'name' => [
@@ -31,7 +32,7 @@ class Customer
 }
 ```
 
-`ANONYMIZABLE` is defined as array of `'column name' => [what to do]` values.
+`ANONYMIZABLE` is defined as an array of `'column_name' => [what_to_do]` values.
 
 ### Prepare ANONYMIZABLE constant
 
@@ -58,8 +59,8 @@ const ANONYMIZABLE = [
     ];
  ```
 **Replace with exact value**  
-- if value of setTo is an array type, it is converted to json string. E.g. `['foo' => 'bar']` is converted to `{"foo":"bar"}`
-- if value of setTo is `null`, it is converted to NULL. Pay special attention that the column must be nullable in this case.
+- if value of setTo is an array type, it is converted to json string. For instance `['foo' => 'bar']` is converted to `{"foo":"bar"}`.
+- if value of setTo is `null`, it is converted to NULL. Pay special attention that column is set as _nullable_.
 ```php
 const ANONYMIZABLE = [
         'favorite_politician' => [
@@ -75,7 +76,7 @@ const ANONYMIZABLE = [
     ];
  ```
 **Replace also NULL values**  
-By default, NULL values are retained, if you want to anonymize them also, just use `anonymizeNull` switch for specified column.
+By default, NULL values are skipped. If you also want to anonymize them, you must add `anonymizeNull` to the column with a value `true`.
 ```php
 const ANONYMIZABLE = [
         'shipping_address' => [
@@ -87,21 +88,21 @@ const ANONYMIZABLE = [
  ```
 
 ### Run anonymization
-Run anonymization of all models with anonymization trait
+To run anonymization for the entire database (all models with Anonymizable trait) use
 ```cmd
 php artisan db:anonymize
 ```
-Run anonymization of specific model's table
+To run anonymization over a specific model use command with `--model=` option
 ```cmd
 php artisan db:anonymize --model=\\App\\Models\\VerificationCode
 ```
-Run anonymization of specific columns in all models where are specified columns defined in `ANONYMIZABLE` constant.
+To run anonymizing specific columns in the entire database use command with `--columns=` option. Individual column names must be separated by comma
 ```cmd
 php artisan db:anonymize --columns=name,surname
 ```
-Run anonymization of specific columns in specific model's table
+Use a combination of the previous two options to anonymize specific columns above a specific model
 ```cmd
-php artisan db:anonymize --model=\\App\\Models\\VerificationCode --columns=name,surname
+php artisan db:anonymize --model=\\App\\Models\\User --columns=name,surname
 ```
 
 ## Testing
