@@ -19,7 +19,7 @@ class LaravelRapidDbAnonymizer extends Command
 
     protected Generator $faker;
 
-    protected int $chunkSize;
+    protected ?int $chunkSize;
 
     protected ?array $columns;
 
